@@ -28,6 +28,23 @@ def is_solved(grid: np.ndarray) -> bool:
     return True
 
 
+def solve(grid: np.ndarray):
+
+    for row in ROWS:
+        for col in COLS:
+            if grid[row, col]:
+                continue  # cell already filled, go to next cell
+            for num in NUMS:
+                if can_place(num, grid, row, col):
+                    grid[row, col] = num  # write num in cell
+                    solve(grid)
+                    if is_solved(grid):
+                        # print(grid_to_str(grid) + "\n")
+                        return
+                    grid[row, col] = 0  # backtrack
+
+
+
 def grid_to_str(grid: np.ndarray) -> str:
     return "\n".join("".join(str(num) for num in row) for row in grid)
     # or, equivalently:
@@ -41,19 +58,3 @@ def grid_from_str(s: str) -> np.ndarray:
 
 def read_txt(f, sep: str="") -> np.ndarray:
     return grid_from_str(open(f).read().replace(sep,""))
-
-
-def solve(grid: np.ndarray):
-    if is_solved(grid):
-        print(grid_to_str(grid) + "\n")
-        return
-
-    for row in ROWS:
-        for col in COLS:
-            if grid[row, col]:
-                continue  # cell already filled, go to next cell
-            for num in NUMS:
-                if can_place(num, grid, row, col):
-                    grid[row, col] = num  # write num in cell
-                    solve(grid)
-                    grid[row, col] = 0  # backtrack
