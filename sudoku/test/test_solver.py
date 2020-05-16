@@ -1,5 +1,5 @@
 import numpy as np
-from ..solver import subgrid, can_place, is_solved
+from ..solver import subgrid, can_place, is_solved, grid_to_str
 import pytest
 from pathlib import Path
 
@@ -29,3 +29,7 @@ def test_is_solved():
 
     # illegal duplicate 1 in top left subgrid
     assert ~is_solved(np.genfromtxt(Path(__file__).parent / "grid_solved_wrong.csv", delimiter=" ", dtype=int))
+
+
+def test_grid_to_str():
+    assert grid_to_str(np.array([[1,2,3],[4,5,6]])) == "123\n456"
