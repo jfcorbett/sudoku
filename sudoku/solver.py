@@ -5,14 +5,17 @@ NUMS = range(1, 10)
 
 
 def subgrid(grid: np.ndarray, row: int, col: int) -> np.ndarray:
-    """Returns the 3x3 square to which (row,col) belongs"""
+    """Returns the 3x3 square to which cell (row,col) belongs"""
     sg_row = int(row/3) * 3
     sg_col = int(col/3) * 3
     return grid[sg_row:sg_row+3, sg_col:sg_col+3]
 
 
 def can_place(num: int, grid: np.ndarray, row: int, col: int) -> bool:
-    return ~grid[row, col] and num not in grid[row, :] and num not in grid[:, col] and num not in subgrid(grid, row, col)
+    return ~grid[row, col] \
+        and num not in grid[row, :] \
+        and num not in grid[:, col] \
+        and num not in subgrid(grid, row, col)
 
 
 def is_solved(grid: np.ndarray) -> bool:
@@ -30,6 +33,14 @@ def grid_to_str(grid: np.ndarray) -> str:
     # or, equivalently:
     # nr, nc = grid.shape
     # return "\n".join("".join(str(grid[r, c]) for c in range(nc)) for r in range(nr))
+
+
+def grid_from_str(s: str) -> np.ndarray:
+    return np.array([[int(n) for n in sp] for sp in s.strip().split('\n')])
+
+
+def read_txt(f, sep: str="") -> np.ndarray:
+    return grid_from_str(open(f).read().replace(sep,""))
 
 
 def solve(grid: np.ndarray):
