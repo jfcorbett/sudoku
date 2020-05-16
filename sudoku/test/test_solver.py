@@ -5,6 +5,16 @@ from pathlib import Path
 from textwrap import dedent
 
 
+def test_grid_to_str():
+    assert grid_to_str(np.array([[1,2,3],[4,5,6]])) == "123\n456"
+
+
+def test_grid_from_str():
+    np.testing.assert_array_equal(grid_from_str(dedent("""\
+    123
+    456""")), np.array([[1,2,3],[4,5,6]]))
+
+
 def test_subgrid():
 
     g = read_txt(Path(__file__).parent / "grid.csv", sep=" ")
@@ -13,7 +23,7 @@ def test_subgrid():
 
 
 def test_can_place():
-    g = read_txt(Path(__file__).parent / "grid.csv", sep=" ")
+    g = read_txt(Path(__file__).parent / "grid.csv")
     
     assert can_place(7, g, row=0, col=8)  # legal
 
@@ -24,20 +34,10 @@ def test_can_place():
 
 
 def test_is_solved():
-    assert is_solved(np.genfromtxt(Path(__file__).parent / "grid_solved.csv", delimiter=" ", dtype=int))
+    assert is_solved(read_txt(Path(__file__).parent / "grid_solved.csv"))
     
     # incomplete
-    assert ~is_solved(np.genfromtxt(Path(__file__).parent / "grid.csv", delimiter=" ", dtype=int))
+    assert ~is_solved(read_txt(Path(__file__).parent / "grid.csv"))
 
     # illegal duplicate 1 in top left subgrid
-    assert ~is_solved(np.genfromtxt(Path(__file__).parent / "grid_solved_wrong.csv", delimiter=" ", dtype=int))
-
-
-def test_grid_to_str():
-    assert grid_to_str(np.array([[1,2,3],[4,5,6]])) == "123\n456"
-
-
-def test_grid_from_str():
-    np.testing.assert_array_equal(grid_from_str(dedent("""\
-    123
-    456""")), np.array([[1,2,3],[4,5,6]]))
+    assert ~is_solved(read_txt(Path(__file__).parent / "grid_solved_wrong.csv"))
