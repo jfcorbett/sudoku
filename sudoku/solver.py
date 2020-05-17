@@ -38,10 +38,15 @@ def solve(grid: np.ndarray):
                 if can_place(num, grid, row, col):
                     grid[row, col] = num  # write num in cell
                     solve(grid)
-                    if is_solved(grid):
-                        # print(grid_to_str(grid) + "\n")
-                        return
                     grid[row, col] = 0  # backtrack
+            
+            # tried placing all numbers in this cell
+            return
+    
+    # all cells are already filled
+    assert is_solved(grid)
+    print(grid_to_str(grid) + "\n")
+    return
 
 
 
