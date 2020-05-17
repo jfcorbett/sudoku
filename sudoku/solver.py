@@ -1,4 +1,5 @@
 import numpy as np
+from typing import List
 
 ROWS = COLS = range(9)
 NUMS = range(1, 10)
@@ -28,7 +29,10 @@ def is_solved(grid: np.ndarray) -> bool:
     return True
 
 
-def solve(grid: np.ndarray):
+def solve(grid: np.ndarray, _sols=None) -> List[np.ndarray]:
+
+    if _sols is None:
+        _sols = []
 
     for row in ROWS:
         for col in COLS:
@@ -37,16 +41,17 @@ def solve(grid: np.ndarray):
             for num in NUMS:
                 if can_place(num, grid, row, col):
                     grid[row, col] = num  # write num in cell
-                    solve(grid)
+                    _sols = solve(grid, _sols)
                     grid[row, col] = 0  # backtrack
             
             # tried placing all numbers in this cell
-            return
+            return _sols
     
     # all cells are already filled
     assert is_solved(grid)
+    _sols.append(grid.copy())
     print(grid_to_str(grid) + "\n")
-    return
+    return _sols
 
 
 
