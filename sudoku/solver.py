@@ -29,10 +29,7 @@ def is_solved(grid: np.ndarray) -> bool:
     return True
 
 
-def solve(grid: np.ndarray, _sols=None) -> List[np.ndarray]:
-
-    if _sols is None:
-        _sols = []
+def solve(grid: np.ndarray) -> List[np.ndarray]:
 
     for row in ROWS:
         for col in COLS:
@@ -41,17 +38,15 @@ def solve(grid: np.ndarray, _sols=None) -> List[np.ndarray]:
             for num in NUMS:
                 if can_place(num, grid, row, col):
                     grid[row, col] = num  # write num in cell
-                    _sols = solve(grid, _sols)
+                    yield from solve(grid)  # throw it in the air if it's a solution
                     grid[row, col] = 0  # backtrack
             
             # tried placing all numbers in this cell
-            return _sols
+            return
     
-    # all cells are already filled
+    # all cells are already filled -- we have a solution
     assert is_solved(grid)
-    _sols.append(grid.copy())
-    print(grid_to_str(grid) + "\n")
-    return _sols
+    yield grid.copy()
 
 
 
