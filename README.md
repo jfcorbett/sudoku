@@ -1,5 +1,12 @@
 # sudoku
 
+To entertain myself while watching a children's movie, I made this simple sudoku solver. Approach: backtracking. 
+
+Possible improvements:
+
+* Rather than naively go through all cells, first find the empty ones, and then sort them in increasing order of likely "freedom", e.g. start with cells whose col/row/square are most filled up. Then fill them up in that order. 
+* Keep track of how much backtracking was done for each solution. I guess this can be an indicator of "difficulty"
+
 
 
 ## Example usage
